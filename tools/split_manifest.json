@@ -1,0 +1,600 @@
+{
+  "version": 1,
+  "package": "tcad_simulator",
+  "description": "Version-tolerant split manifest for tcad_simulator.py.",
+  "modules": [
+    {
+      "name": "compat",
+      "symbols": [
+        "_HAS_QT",
+        "Fernet",
+        "InvalidToken",
+        "_skimage_marching_cubes",
+        "_scipy_ndimage",
+        "_numba",
+        "QtCore",
+        "QtGui",
+        "QtWidgets",
+        "FigureCanvasQTAgg"
+      ],
+      "prefixes": []
+    },
+    {
+      "name": "knowledge.engine",
+      "symbols": [
+        "KnowledgeEngine"
+      ],
+      "prefixes": []
+    },
+    {
+      "name": "knowledge.documents",
+      "symbols": [
+        "SemanticDocumentProcessor",
+        "LocalVectorIndex",
+        "ProcessMapper",
+        "PhysicsAuditor"
+      ],
+      "prefixes": []
+    },
+    {
+      "name": "knowledge.skills",
+      "symbols": [
+        "_TCAD_SKILLS_SPEC_VERSION",
+        "_TCAD_DEFAULT_SKILLS_MD",
+        "_TcadSkill",
+        "_TcadSkillLibrary",
+        "_TCAD_SKILLS_LOCK",
+        "_TCAD_SKILLS_CACHE",
+        "_tcad_skills_build_md",
+        "_tcad_default_skills_dir",
+        "_tcad_parse_frontmatter_yaml_like",
+        "_tcad_parse_skill_md",
+        "_tcad_skills_resolve_dir",
+        "_tcad_skills_ensure_default_library",
+        "tcad_skills_get_library",
+        "tcad_skills_reload",
+        "tcad_skills_validate_dir",
+        "_tcad_skills_guess_user_text",
+        "_tcad_skills_list_from_meta",
+        "_tcad_skills_select",
+        "tcad_skills_build_injection_message",
+        "tcad_skills_maybe_inject_messages"
+      ],
+      "prefixes": [
+        "_tcad_skills",
+        "tcad_skills"
+      ]
+    },
+    {
+      "name": "core.numeric",
+      "symbols": [
+        "_set_numba_threads",
+        "ParallelExecutor",
+        "_binary_propagation_fallback_3d",
+        "_binary_propagation_distance_3d",
+        "_weighted_propagation_distance_3d",
+        "_geodesic_grow_variable_radius_from_seeds",
+        "_euclidean_distance_transform",
+        "signed_distance",
+        "_mask_bbox_slices",
+        "upwind_gradient",
+        "evolve_levelset",
+        "surface_normals",
+        "clamp",
+        "gaussian_blur_fft",
+        "logistic",
+        "fibonacci_hemisphere"
+      ],
+      "prefixes": [
+        "_binary_",
+        "_weighted_",
+        "_geodesic_"
+      ]
+    },
+    {
+      "name": "core.physics_data",
+      "symbols": [
+        "ResistModelParameters",
+        "ResistChemistryState",
+        "TCCMode",
+        "IMPLANT_SPECIES_DB",
+        "IMPLANT_TARGET_DB",
+        "CRYSTAL_CHANNEL_AXES",
+        "AVOGADRO_CM3",
+        "BOHR_RADIUS_NM",
+        "COULOMB_COEFF_EV_NM",
+        "DAMAGE_AMORPHIZATION_THRESHOLD",
+        "ION_ENERGY_CUTOFF_EV",
+        "RESIST_PARAMETER_DB",
+        "ETCH_MATERIAL_DB",
+        "WET_ANISOTROPIC_DB",
+        "WET_CHEMISTRY_DB",
+        "DEFAULT_WET_CHEMISTRY",
+        "_canonical_species_key",
+        "_canonical_species_symbol",
+        "_species_params",
+        "_target_params",
+        "_screening_length_nm",
+        "_nuclear_cross_section_nm2",
+        "_electron_stopping_ev_per_nm",
+        "_kinchin_pease_defects",
+        "_random_unit_vector_within_cone"
+      ],
+      "prefixes": [
+        "_canonical_species",
+        "_species_",
+        "_target_"
+      ]
+    },
+    {
+      "name": "core.geometry",
+      "symbols": [
+        "HeightMapSurfacePatch",
+        "CUBE_CORNERS",
+        "EDGE_CONNECTION",
+        "EDGE_TABLE",
+        "TRI_TABLE",
+        "AdvancedSurfaceReconstructor",
+        "ReconstructionOptions",
+        "SurfaceComponentResult",
+        "_interpolate_vertex",
+        "marching_cubes",
+        "_patch_to_triangles"
+      ],
+      "prefixes": []
+    },
+    {
+      "name": "core.snapshot",
+      "symbols": [
+        "_TCAD_SNAPSHOT_REF_KEY",
+        "_TCAD_CACHE_TTL_S",
+        "_TCAD_CACHE_PRUNE_MIN_INTERVAL_S",
+        "_tcad_touch_path",
+        "_tcad_prune_cache_tree",
+        "_tcad_prune_webui_storage_caches",
+        "_is_tcad_snapshot_ref",
+        "_tcad_snapshot_ref_path",
+        "_tcad_snapshot_save_atomic",
+        "_tcad_snapshot_spill_to_disk",
+        "_tcad_snapshot_load_maybe",
+        "_tcad_snapshot_drop_maybe",
+        "_tcad_snapshot_jsonish_copy",
+        "_tcad_link_or_copy_atomic",
+        "_tcad_snapshot_rewrite_data_file_paths",
+        "_tcad_snapshot_clone_aux_payloads",
+        "_tcad_snapshot_clone_ref_to_path",
+        "_tcad_zlib_compress_ndarray",
+        "_tcad_zlib_compress_ndarray_to_file",
+        "_tcad_zlib_decompress_file_into_mv",
+        "_tcad_zlib_pack_ndarray",
+        "_tcad_snapshot_estimate_bytes"
+      ],
+      "prefixes": [
+        "_tcad_snapshot",
+        "_tcad_zlib"
+      ]
+    },
+    {
+      "name": "core.grid_io",
+      "symbols": [
+        "_compress_grid_column_spans",
+        "_decompress_grid_column_spans",
+        "_compress_grid_bricks",
+        "_decompress_grid_bricks",
+        "compress_voxel_grid",
+        "decompress_voxel_grid",
+        "parse_selectivity",
+        "resample_mask",
+        "load_mask_from_file",
+        "_load_gds_layers",
+        "_rasterize_polygons"
+      ],
+      "prefixes": [
+        "_compress_grid",
+        "_decompress_grid"
+      ]
+    },
+    {
+      "name": "materials.database",
+      "symbols": [
+        "Material",
+        "ParameterSpec",
+        "MaterialDatabase"
+      ],
+      "prefixes": []
+    },
+    {
+      "name": "process.model",
+      "symbols": [
+        "ProcessModel"
+      ],
+      "prefixes": []
+    },
+    {
+      "name": "process.steps",
+      "symbols": [
+        "ProcessStep",
+        "InitializeWaferStep",
+        "SpinResistStep",
+        "ExposureStep",
+        "DevelopStep",
+        "PostExposureBakeStep",
+        "DepositionStep",
+        "SelectiveEpitaxyStep",
+        "EtchStep",
+        "CMPProcessStep",
+        "ImplantationStep",
+        "AnnealStep",
+        "OxidationNitridationStep",
+        "PROCESS_STEP_FACTORIES"
+      ],
+      "prefixes": []
+    },
+    {
+      "name": "process.headless",
+      "symbols": [
+        "_headless_step_signature",
+        "_headless_material_db_signature",
+        "_headless_deserialize_step",
+        "SimulateContext",
+        "simulate_headless"
+      ],
+      "prefixes": [
+        "_headless"
+      ]
+    },
+    {
+      "name": "mask.analysis",
+      "symbols": [
+        "_MASK_NODE_DRC_DB",
+        "_mask_feature_metrics_1d",
+        "_mask_downsample_bool_max_pool",
+        "_mask_connectivity_metrics_2d",
+        "_mask_net_rules_check",
+        "_mask_feature_descriptors_2d",
+        "_mask_litho_proxy_develop",
+        "_mask_process_window_probe",
+        "_mask_infer_tech_node_nm",
+        "_mask_drc_for_node",
+        "_mask_spec_apply_drc",
+        "ProcessPhysicsDB",
+        "_wafer_topography_profile_tiles",
+        "_mask_bool_to_svg_rects",
+        "_mask_bool_to_gds_rects",
+        "nprobe_geometric_analyzer"
+      ],
+      "prefixes": [
+        "_mask_",
+        "nprobe_"
+      ]
+    },
+    {
+      "name": "mask.layout",
+      "symbols": [
+        "_mask_spec_sanitize",
+        "_mask_layout_graph_sanitize",
+        "_mask_layout_graph_from_spec",
+        "solve_layout_graph_to_spec",
+        "_mask_layout_graph_has_geometry",
+        "_mask_spec_has_geometry",
+        "_mask_requires_net_rules",
+        "_mask_autogen_net_rules_from_mask",
+        "_mask_prompt_fusion_to_spec"
+      ],
+      "prefixes": [
+        "solve_layout",
+        "_mask_layout"
+      ]
+    },
+    {
+      "name": "ui.qt_components",
+      "symbols": [
+        "WaferCanvas",
+        "CrossSectionCanvas",
+        "HeatmapCanvas",
+        "MaskPaintTable",
+        "MaskDesignerDialog",
+        "CMPSelectivityEditor",
+        "ParameterEditor",
+        "AILabAssistantWidget",
+        "MainWindow"
+      ],
+      "prefixes": []
+    },
+    {
+      "name": "ui.controller",
+      "symbols": [
+        "SimulatorController"
+      ],
+      "prefixes": []
+    },
+    {
+      "name": "webui.shared",
+      "symbols": [
+        "_WEBUI_COOKIE_NAME",
+        "_webui_timestamp",
+        "_webui_safe_filename",
+        "_webui_normalize_quality",
+        "_webui_pickle_dump",
+        "_webui_pickle_load",
+        "_tcad_geom_bytes_to_binary_stl",
+        "_webui_download_to_path",
+        "_webui_guess_lan_ip",
+        "_webui_launch_root",
+        "_tcad_user_data_root",
+        "_tcad_ensure_writable_dir",
+        "_tcad_default_webui_storage_root",
+        "_llm_norm_provider_tcad",
+        "_llm_norm_provider_html",
+        "_llm_norm_ollama_chat_endpoint",
+        "_llm_norm_ollama_host",
+        "_webui_find_ffmpeg_exe",
+        "_webui_run_ffmpeg",
+        "_webui_encode_mp4_from_png_frames",
+        "_atomic_write_bytes",
+        "_file_lock",
+        "_slugify",
+        "_tcad_storage_root_from_session_dir"
+      ],
+      "prefixes": [
+        "_webui_",
+        "_llm_norm_",
+        "_tcad_user",
+        "_tcad_default_webui"
+      ]
+    },
+    {
+      "name": "library.admin_config",
+      "symbols": [
+        "_ADMIN_CONFIG_SCHEMA_VERSION",
+        "_PROCESS_VARIANTS_VERSION",
+        "_PRESET_SEQUENCES_VERSION",
+        "_library_master_key_path",
+        "_library_admin_config_path",
+        "_library_root_dir",
+        "_require_fernet",
+        "_library_load_or_create_master_key",
+        "_library_master_fernet",
+        "_library_dept_fernet",
+        "_read_json_enc",
+        "_write_json_enc_atomic",
+        "_admin_config_schema_version",
+        "_admin_config_migrate",
+        "_admin_config_validate",
+        "_session_process_config_view",
+        "_library_default_admin_config",
+        "_library_load_admin_config",
+        "_library_save_admin_config",
+        "_admin_auth_record",
+        "_admin_hash_password",
+        "_admin_password_is_set",
+        "_admin_set_password",
+        "_admin_clear_password",
+        "_admin_verify_password"
+      ],
+      "prefixes": [
+        "_admin_",
+        "_session_process"
+      ]
+    },
+    {
+      "name": "library.storage",
+      "symbols": [
+        "_library_backup_dir",
+        "_library_list_backups",
+        "_library_prune_backups",
+        "_library_create_backup",
+        "_library_maybe_weekly_backup",
+        "_library_restore_backup",
+        "_library_validate_profile",
+        "_library_user_key",
+        "_library_get_user_key_for_session",
+        "_library_get_user_record",
+        "_library_ensure_department",
+        "_library_department_slug",
+        "_library_department_enabled",
+        "_library_set_profile",
+        "_library_profile_status",
+        "_library_allowed_departments",
+        "_library_index_path",
+        "_library_files_dir",
+        "_library_load_index",
+        "_library_save_index",
+        "_library_extract_custom_mask_from_blob",
+        "_library_encode_png_gray8",
+        "_library_mask_thumbnail_data_url",
+        "_library_update_mask_thumbnail",
+        "_library_store_blob",
+        "_library_list_items",
+        "_library_get_blob",
+        "_library_delete_item"
+      ],
+      "prefixes": [
+        "_library_"
+      ]
+    },
+    {
+      "name": "library.literature",
+      "symbols": [
+        "_tcad_litdb_paths",
+        "_tcad_litdb_ensure_dirs",
+        "_tcad_litdb_load_index",
+        "_tcad_litdb_save_index",
+        "_tcad_litdb_rag_load_documents",
+        "_tcad_litdb_rag_save_documents",
+        "_tcad_litdb_rag_load_chunks",
+        "_tcad_litdb_rag_save_chunks",
+        "_tcad_litdb_rag_build_raw_text",
+        "_tcad_litdb_rag_build_chunks",
+        "_tcad_litdb_doc_id_for_pdf",
+        "_tcad_litdb_doc_path",
+        "_tcad_litdb_text_cache_path",
+        "_tcad_litdb_extract_pdf_text_and_meta",
+        "_tcad_litdb_select_relevant_text",
+        "_tcad_litdb_reconstruct_text",
+        "_tcad_litdb_hard_extract_flows",
+        "_tcad_litdb_map_action_to_tcad_step"
+      ],
+      "prefixes": [
+        "_tcad_litdb"
+      ]
+    },
+    {
+      "name": "library.recipe",
+      "symbols": [
+        "_RECIPE_JSON_VERSION",
+        "_webui_serialize_parameter_spec",
+        "_webui_serialize_step",
+        "_webui_deserialize_step",
+        "_infer_exposure_advanced_enable",
+        "_webui_default_recipe",
+        "_webui_material_list",
+        "_webui_model_summary",
+        "_webui_session_paths",
+        "_parse_rgb01_any",
+        "_tail_text_file_lines",
+        "_normalize_composition_map",
+        "_normalize_tags_list",
+        "_admin_apply_material_patch",
+        "_webui_apply_admin_materials",
+        "_webui_apply_admin_step_defaults",
+        "_looks_material_param_key",
+        "_resolve_material_id_any",
+        "_resolve_material_name_any",
+        "_recipe_params_legacy_material_names",
+        "_recipe_json_version",
+        "_recipe_migrate_resist_develop_time",
+        "_recipe_json_validate_and_migrate",
+        "_webui_export_step_blob_compat",
+        "_admin_resolve_variant_record",
+        "_normalize_step_material_params"
+      ],
+      "prefixes": [
+        "_recipe_",
+        "_normalize_"
+      ]
+    },
+    {
+      "name": "agent.worker_agent",
+      "symbols": [],
+      "prefixes": [
+        "_agent_",
+        "_NativeGraphKB",
+        "_NKB",
+        "_NRL"
+      ]
+    },
+    {
+      "name": "webui.worker",
+      "symbols": [
+        "_webui_worker_main",
+        "_TCAD_THREAD_CONN_EOF"
+      ],
+      "prefixes": []
+    },
+    {
+      "name": "webui.server",
+      "symbols": [
+        "_QueueDuplexConn",
+        "_ThreadWorkerProcess",
+        "_webui_start_inprocess_worker",
+        "_tcad_can_spawn_webui_worker",
+        "_tcad_can_fork_webui_worker",
+        "WebUISession",
+        "_WebUIHTTPServer",
+        "_WebUIRequestHandler",
+        "WebUIServerManager"
+      ],
+      "prefixes": []
+    },
+    {
+      "name": "webui.admin",
+      "symbols": [
+        "_ADMIN_COOKIE_NAME",
+        "_AdminHTTPServer",
+        "_AdminRequestHandler",
+        "_builtin_surface_reaction_rate_table",
+        "_builtin_anneal_diffusivity_table",
+        "AdminServerManager"
+      ],
+      "prefixes": [
+        "_builtin_anneal",
+        "_builtin_surface"
+      ]
+    },
+    {
+      "name": "webui.assets",
+      "symbols": [
+        "_ADMIN_INDEX_HTML",
+        "_ADMIN_SCRIPT_JS",
+        "_WEBUI_INDEX_HTML",
+        "_WEBUI_STYLE_CSS",
+        "_WEBUI_SCRIPT_JS"
+      ],
+      "prefixes": []
+    },
+    {
+      "name": "selftests.runner",
+      "symbols": [
+        "_run_mask_prompt_selftest",
+        "_run_webui_agent_selftest",
+        "_run_saqp_selftest",
+        "_run_recipe_io_selftest"
+      ],
+      "prefixes": [
+        "_run_"
+      ]
+    },
+    {
+      "name": "app.entrypoint",
+      "symbols": [
+        "main"
+      ],
+      "prefixes": []
+    }
+  ],
+  "assets": {
+    "_ADMIN_INDEX_HTML": "assets/webui/admin.html",
+    "_ADMIN_SCRIPT_JS": "assets/webui/admin.js",
+    "_WEBUI_INDEX_HTML": "assets/webui/index.html",
+    "_WEBUI_STYLE_CSS": "assets/webui/style.css",
+    "_WEBUI_SCRIPT_JS": "assets/webui/app.js"
+  },
+  "public_api": [
+    "ProcessModel",
+    "MaterialDatabase",
+    "Material",
+    "ParameterSpec",
+    "ProcessStep",
+    "InitializeWaferStep",
+    "SpinResistStep",
+    "ExposureStep",
+    "DevelopStep",
+    "PostExposureBakeStep",
+    "DepositionStep",
+    "SelectiveEpitaxyStep",
+    "EtchStep",
+    "CMPProcessStep",
+    "ImplantationStep",
+    "AnnealStep",
+    "OxidationNitridationStep",
+    "PROCESS_STEP_FACTORIES",
+    "SimulateContext",
+    "simulate_headless",
+    "KnowledgeEngine",
+    "tcad_skills_get_library",
+    "tcad_skills_reload",
+    "tcad_skills_validate_dir",
+    "tcad_skills_maybe_inject_messages",
+    "SimulatorController",
+    "MainWindow",
+    "WebUIServerManager",
+    "AdminServerManager"
+  ],
+  "cli_selftests": [
+    "--mask-prompt-selftest",
+    "--webui-selftest",
+    "--saqp-selftest",
+    "--recipe-io-selftest"
+  ]
+}

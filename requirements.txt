@@ -1,0 +1,26 @@
+# Core runtime
+numpy>=1.23
+matplotlib>=3.6
+PyQt5>=5.15
+scipy>=1.9
+scikit-image>=0.20
+cryptography>=41
+
+# Optional acceleration
+numba>=0.58
+
+# Optional image/PDF/GDS/export features
+Pillow>=9.5
+imageio>=2.31
+imageio-ffmpeg>=0.4.9
+pdfminer.six>=20221105
+PyPDF2>=3.0
+gdstk>=0.9
+certifi>=2023.7.22
+
+# Optional alternative PDF extractor.
+# PyMuPDF has AGPL/commercial licensing; install only if that license fits your use case.
+# PyMuPDF>=1.23
+
+# Optional GDS fallback if gdstk is unavailable.
+# gdspy>=1.6
