@@ -55,8 +55,7 @@ This is a research and education-oriented TCAD-like simulator. It uses physics-i
 ├── SECURITY.md                # 安全策略 / Vulnerability reporting policy
 ├── CODE_OF_CONDUCT.md         # 社区行为准则 / Community conduct policy
 ├── tools/                     # 开发工具，包括拆分脚本 / Developer tooling, including split helpers
-├── tcad_simulator_split/      # 生成产物，默认不上传 / Generated split package; ignored for release
-└── tcad_simulator_split.zip   # 生成产物，默认不上传 / Generated split archive; ignored for release
+└── tcad_simulator_split/      # 生成产物，默认不上传 / Generated split archive; ignored for release
 ```
 
 ## 环境要求 / Requirements
