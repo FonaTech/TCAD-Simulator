@@ -21,9 +21,9 @@
 
 `tcad_simulator.py` 是项目主入口和权威源码。它把工艺 recipe 编辑、体素晶圆模型、光刻/掩膜流程、沉积、刻蚀、CMP、离子注入、退火、氧化/氮化、测量、3D/2D 可视化、导出工具、桌面 GUI、多用户 WebUI 和可选 LLM recipe 辅助集成在一个单文件应用中。
 
-> `tcad_simulator_split/` and `tcad_simulator_split.zip` are generated developer artifacts. They are useful for code inspection and reports, but they are not required for a normal GitHub source release.
+> `tcad_simulator_split/` and `tcad_simulator_split.zip` are generated developer artifacts. They are useful for code inspection and reports, but they are not needed to run the simulator.
 >
-> `tcad_simulator_split/` 和 `tcad_simulator_split.zip` 是生成的开发辅助产物，可用于代码审查和报告，不是普通 GitHub 源码发布必须上传的主体。
+> `tcad_simulator_split/` 和 `tcad_simulator_split.zip` 是生成的开发辅助产物，可用于代码审查和报告，运行 simulator 不需要它们。
 
 ## Contents
 
@@ -35,7 +35,7 @@
 - [Run](#run)
 - [Documentation](#documentation)
 - [Developer Tooling](#developer-tooling)
-- [GitHub Release Checklist](#github-release-checklist)
+- [Runtime Data](#runtime-data)
 - [License](#license)
 
 ## Capabilities
@@ -323,7 +323,7 @@ python3 tools/docsite.py --docs-dir docs --out-dir docs_html
 
 If `tools/html_vendor/` is missing Mermaid, Marked, MathJax, or Highlight.js, the docsite builder downloads the required vendor assets automatically. `docs_html/` and `tools/html_vendor/` are reproducible generated outputs and are ignored by default.
 
-如果 `tools/html_vendor/` 缺少 Mermaid、Marked、MathJax 或 Highlight.js，HTML 文档构建器会自动下载依赖。`docs_html/` 和 `tools/html_vendor/` 是可再生成产物，默认不上传。
+如果 `tools/html_vendor/` 缺少 Mermaid、Marked、MathJax 或 Highlight.js，HTML 文档构建器会自动下载依赖。`docs_html/` 和 `tools/html_vendor/` 是可再生成产物，默认被 Git 忽略。
 
 ## Developer Tooling
 
@@ -346,49 +346,33 @@ split_tcad.bat
 
 Generated outputs include `tcad_simulator_split/docs/`, `tcad_simulator_split/docs_html/`, `SPLIT_REPORT.json`, and `VERIFY_REPORT.json`. They are for developer inspection and are ignored by default.
 
-生成物包括 `tcad_simulator_split/docs/`、`tcad_simulator_split/docs_html/`、`SPLIT_REPORT.json` 和 `VERIFY_REPORT.json`，用于开发检查，默认不上传。
+生成物包括 `tcad_simulator_split/docs/`、`tcad_simulator_split/docs_html/`、`SPLIT_REPORT.json` 和 `VERIFY_REPORT.json`，用于开发检查，默认被 Git 忽略。
 
-## GitHub Release Checklist
+## Runtime Data
 
-Recommended files to upload:
+The simulator creates local runtime and generated files while running the desktop GUI, WebUI, documentation builder, and developer split tools. These files are intentionally ignored by Git because they can be large, machine-specific, or private.
 
-建议上传：
+仿真器在运行桌面 GUI、WebUI、文档构建器和开发拆分工具时会生成本地运行数据和构建产物。这些文件可能很大、只适用于当前机器，或包含私有信息，因此默认被 Git 忽略。
 
-- `tcad_simulator.py`
-- `TCAD_Demo.png`
-- `README.md`
-- `docs/`
-- `LICENSE`
-- `requirements.txt`
-- `THIRD_PARTY_NOTICES.md`
-- `CONTRIBUTING.md`
-- `SECURITY.md`
-- `CODE_OF_CONDUCT.md`
-- `.gitignore`
-- `.github/`
-- `run_tcad_macos.sh`, `run_tcad_linux.sh`, `run_tcad.ps1`, `run_tcad.bat`
-- `tools/` and `split_tcad*` if you want to publish developer split tooling
+| Path | Purpose |
+| --- | --- |
+| `TCAD_Web_Data/` | WebUI sessions, static assets, autosaves, logs, preview cache, exports, encrypted library data, Admin config, and local keys |
+| `docs_html/` | Generated offline HTML version of `docs/` |
+| `tools/html_vendor/` | Downloaded JavaScript/CSS vendor cache for HTML documentation |
+| `tcad_simulator_split/` | Generated package-style source view and developer reports |
+| `tcad_simulator_split.zip` | Generated split archive |
+| `TCAD_Selftest_Output_*/` | Selftest artifacts and exported regression data |
 
-Do not upload by default:
+Do not place API keys, private process recipes, proprietary datasets, private papers, or internal experiment outputs in the repository.
 
-默认不要上传：
-
-- `TCAD_Web_Data/`
-- `docs_html/`
-- `tools/html_vendor/`
-- `tcad_simulator_split/`
-- `tcad_simulator_split.zip`
-- `.DS_Store`
-- `TCAD_Selftest_Output_*/`
-- `LLM_Test_Config.json`
-- API keys, private datasets, internal recipes, private papers, or generated exports
+不要把 API key、私有工艺 recipe、专有数据集、未公开论文或内部实验输出放进仓库。
 
 ## License
 
-This project's own source code is intended to be released under the MIT License. See [`LICENSE`](LICENSE).
+This project is released under the MIT License. See [`LICENSE`](LICENSE).
 
-本项目你自己的源代码计划使用 MIT License 发布，见 [`LICENSE`](LICENSE)。
+本项目代码采用 MIT License 发布，见 [`LICENSE`](LICENSE)。
 
-Important dependency note: MIT is reasonable for this project's own code, but it does not change third-party licenses. PyQt5 is GPL/commercial licensed, and optional PyMuPDF/MuPDF is AGPL/commercial licensed. Source release is generally manageable, but packaged binaries, closed-source redistribution, and commercial redistribution need separate review. See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
+Third-party dependencies remain under their own licenses. In particular, PyQt5 is distributed under GPL/commercial licensing, and optional PyMuPDF/MuPDF is distributed under AGPL/commercial licensing. This matters most when redistributing packaged binaries or commercial bundles. See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) for dependency license notes.
 
-重要依赖说明：MIT 对你自己的代码是合理选择，但不会改变第三方依赖许可证。PyQt5 是 GPL/commercial 双许可，可选 PyMuPDF/MuPDF 是 AGPL/commercial。源码开源通常可处理，但二进制打包、闭源再分发或商业分发需要单独复核。详见 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)。
+第三方依赖仍遵循各自许可证。尤其是 PyQt5 采用 GPL/commercial 许可，可选 PyMuPDF/MuPDF 采用 AGPL/commercial 许可；这主要影响二进制打包、商业捆绑或再分发场景。依赖许可证说明见 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)。
