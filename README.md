@@ -55,37 +55,106 @@
 
 ```mermaid
 flowchart TD
-    User[User / Researcher / Process Engineer] --> Desktop[PyQt5 Desktop GUI]
-    User --> Browser[Multi-user WebUI]
-    User --> Headless[Headless CLI Selftests]
+    subgraph Interfaces[User Interfaces]
+        Desktop[PyQt5 desktop GUI]
+        Browser[Multi-user browser WebUI]
+        CLI[Headless CLI and selftests]
+        Admin[Admin UI]
+    end
 
-    Desktop --> Controller[SimulatorController]
-    Browser --> WebServer[WebUIServerManager / HTTP API]
-    WebServer --> Session[WebUISession]
-    Session --> Worker[Worker Runtime]
-    Headless --> SimHeadless[simulate_headless]
+    subgraph Orchestration[Application Orchestration]
+        Controller[SimulatorController]
+        WebServer[WebUIServerManager and HTTP API]
+        Session[WebUISession]
+        Worker[Worker runtime]
+        Headless[simulate_headless]
+        RecipeIO[Recipe JSON migration and history]
+    end
 
-    Controller --> Recipe[Process Recipe]
-    Worker --> Recipe
-    SimHeadless --> Recipe
+    subgraph RecipeLayer[Recipe and Step Layer]
+        Recipe[Process recipe]
+        Factories[PROCESS_STEP_FACTORIES]
+        Steps[ProcessStep subclasses]
+        Params[ParameterSpec UI schema]
+    end
 
-    Recipe --> StepFactory[PROCESS_STEP_FACTORIES]
-    StepFactory --> Step[ProcessStep.execute]
-    Step --> Model[ProcessModel]
+    subgraph ProcessKernel[TCAD Process Kernel]
+        Model[ProcessModel]
+        Materials[MaterialDatabase]
+        Grid[Voxel material grid]
+        Height[Height map and open mask]
+        Fields[Doping, dopant species, defects, exposure fields]
+        Snapshots[Snapshot, cache, undo, spill-to-disk]
+    end
 
-    Model --> Materials[MaterialDatabase]
-    Model --> Grid[Voxel Material Grid]
-    Model --> Fields[Doping / Defect / Exposure Fields]
-    Model --> Mask[Mask and Lithography State]
-    Model --> Geometry[Mesh / Surface / Level-set]
-    Model --> Metrology[Metrics and Reports]
+    subgraph PhysicsDomains[Process Physics Domains]
+        Litho[Lithography and resist]
+        Dep[Deposition]
+        Epi[Selective epitaxy]
+        Etch[Etch]
+        CMP[CMP]
+        Implant[Implantation]
+        Anneal[Anneal and diffusion]
+        Ox[Oxidation, nitridation, surface reactions]
+    end
 
-    Geometry --> Preview[3D / 2D Visualization]
-    Metrology --> Export[CSV / STL / TCAD Geometry / PNG / MP4]
-    Worker --> Storage[TCAD_Web_Data Runtime Storage]
+    subgraph Analysis[Analysis and Output]
+        Geometry[Level-set, marching cubes, surface patches]
+        Preview[3D stack, slices, heatmaps]
+        Metrology[CD, interfaces, inventory, component metrics]
+        Export[CSV, STL, TCAD geometry, PNG frames, MP4]
+    end
 
-    Knowledge[KnowledgeEngine / RAG / Agent] -. optional .-> Recipe
-    Knowledge -. audit .-> Metrology
+    subgraph Knowledge[Optional Knowledge and Agent]
+        Docs[PDF and text ingestion]
+        Retrieval[Local retrieval]
+        Mapper[ProcessMapper]
+        Auditor[PhysicsAuditor]
+        Agent[LLM-assisted recipe drafting]
+    end
+
+    subgraph Storage[Runtime Storage]
+        WebData[TCAD_Web_Data]
+        Static[_static WebUI assets]
+        Library[Encrypted library]
+        Literature[Local literature DB]
+    end
+
+    Desktop --> Controller
+    Browser --> WebServer
+    Admin --> WebServer
+    WebServer --> Session --> Worker
+    CLI --> Headless
+    Controller --> RecipeIO
+    Worker --> RecipeIO
+    Headless --> Recipe
+    RecipeIO --> Recipe
+    Recipe --> Factories --> Steps --> Model
+    Params --> Steps
+    Model --> Materials
+    Model --> Grid
+    Model --> Height
+    Model --> Fields
+    Model --> Snapshots
+    Model --> Litho
+    Model --> Dep
+    Model --> Epi
+    Model --> Etch
+    Model --> CMP
+    Model --> Implant
+    Model --> Anneal
+    Model --> Ox
+    Grid --> Geometry --> Preview
+    Fields --> Preview
+    Grid --> Metrology --> Export
+    Geometry --> Export
+    Worker --> WebData
+    WebData --> Static
+    WebData --> Library
+    WebData --> Literature
+    Docs --> Retrieval --> Mapper --> Agent --> Recipe
+    Auditor --> Recipe
+    Retrieval --> Auditor
 ```
 
 `ProcessModel` is the central state boundary. GUI, WebUI, headless execution, recipe import/export, and optional Agent proposals all converge through the same `ProcessStep.execute(model)` protocol.
@@ -96,38 +165,116 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    A[Initialize Wafer] --> B[Spin Resist]
-    B --> C[Mask Exposure]
-    C --> D[Post Exposure Bake]
-    D --> E[Resist Develop]
-    E --> F[Etch]
-    F --> G[Deposition / Selective Epitaxy]
-    G --> H[CMP]
-    H --> I[Implantation]
-    I --> J[Anneal]
-    J --> K[Oxidation / Nitridation]
-    K --> L[Metrology / Export]
+    Start([Recipe start]) --> Init[Initialize Wafer]
+    Init --> Spin[Spin Resist]
+    Spin --> Exposure[Mask Exposure]
+    Exposure --> PEB[Post-Exposure Bake]
+    PEB --> Develop[Resist Develop]
+    Develop --> Etch[Etch]
+    Etch --> Deposition[Deposition]
+    Deposition --> Epitaxy[Selective Epitaxy]
+    Epitaxy --> CMP[CMP]
+    CMP --> Implant[Implantation]
+    Implant --> Anneal[Anneal]
+    Anneal --> OxNit[Oxidation / Nitridation]
+    OxNit --> Surface[Surface Reaction]
+    Surface --> Metro[Metrology]
+    Metro --> Export[Export]
+    Export --> End([Recipe complete])
 
-    C -. mask density .-> M[Mask Metrics / DRC]
-    F -. selectivity .-> N[Material Rate Model]
-    G -. accessibility .-> O[Conformality / Feature Effects]
-    I -. dose and energy .-> P[Doping and Defect Fields]
-    J -. diffusion .-> P
+    subgraph LithographyControls[Lithography controls]
+        MaskInput[Image, NumPy, or GDSII mask]
+        MaskMetrics[Mask metrics and DRC]
+        Aerial[Aerial image and exposure dose]
+        Resist[Resist chemistry and tone]
+    end
+
+    subgraph MaterialControls[Material and process controls]
+        MatDB[MaterialDatabase]
+        Selectivity[Selectivity and etch rates]
+        Conformality[Conformality, accessibility, feature loading]
+        Dopants[Dopant species, dose, energy, tilt]
+        Thermal[Temperature, time, ambient]
+    end
+
+    MaskInput --> Exposure
+    Exposure --> Aerial --> Resist --> Develop
+    MaskMetrics --> Exposure
+    MatDB --> Init
+    MatDB --> Deposition
+    MatDB --> Epitaxy
+    MatDB --> Etch
+    Selectivity --> Etch
+    Conformality --> Deposition
+    Conformality --> Epitaxy
+    Dopants --> Implant
+    Dopants --> Deposition
+    Thermal --> Anneal
+    Thermal --> OxNit
+    Thermal --> Surface
 ```
 
 ```mermaid
 flowchart TD
-    Grid[Material voxel grid] --> Height[Height map]
-    Grid --> SDF[Signed distance / level-set]
-    SDF --> Normals[Surface normals]
-    SDF --> Mesh[Marching cubes mesh]
-    Height --> Patches[Height-map surface patches]
-    Fields[Doping and exposure fields] --> Slices[Heatmaps and slices]
-    Mesh --> Render[3D preview]
-    Patches --> Render
-    Slices --> Render
-    Grid --> Metrics[CD / interfaces / inventory / components]
-    Metrics --> Reports[Run reports and exports]
+    subgraph State[Mutable simulator state]
+        Grid[3D material-id voxel grid]
+        Height[Height map]
+        OpenMask[Open-mask and resist state]
+        Doping[Doping concentration field]
+        Species[Dopant species fields]
+        Defects[Defect and damage fields]
+        ExposureField[Exposure and resist chemistry fields]
+        Logs[Run log and snapshots]
+    end
+
+    subgraph Numeric[Numeric kernels]
+        EDT[Euclidean distance transform]
+        Propagation[Binary and weighted propagation distance]
+        LevelSet[Signed distance and level-set evolution]
+        Normals[Surface normals]
+        FFT[FFT blur and lithography approximations]
+        Compression[Voxel compression and snapshot spill]
+    end
+
+    subgraph GeometryPath[Geometry reconstruction]
+        Mesh[Marching cubes meshes]
+        Patches[Height-map surface patches]
+        Components[Material component summaries]
+        BRep[B-Rep readiness and smooth surfaces]
+    end
+
+    subgraph Observables[User-visible outputs]
+        Stack3D[3D stack preview]
+        Slices[Cross-sections and heatmaps]
+        Metrics[CD, inventory, interfaces, component diameters]
+        Reports[Run reports]
+        Files[CSV, STL, TCAD geom, PNG, MP4]
+    end
+
+    Grid --> Height
+    Grid --> OpenMask
+    Grid --> EDT
+    Grid --> Propagation
+    Grid --> LevelSet
+    Doping --> Slices
+    Species --> Slices
+    Defects --> Slices
+    ExposureField --> FFT
+    LevelSet --> Normals
+    LevelSet --> Mesh
+    Height --> Patches
+    Grid --> Components
+    Mesh --> BRep
+    Mesh --> Stack3D
+    Patches --> Stack3D
+    Components --> Metrics
+    Grid --> Metrics
+    Slices --> Reports
+    Metrics --> Reports
+    Stack3D --> Files
+    Reports --> Files
+    Logs --> Reports
+    Compression --> Logs
 ```
 
 The numerical model is physics-inspired and designed for research, teaching, and process exploration. It is not a calibrated commercial TCAD sign-off tool.
@@ -142,15 +289,27 @@ sequenceDiagram
     participant HTTP as WebUIRequestHandler
     participant Session as WebUISession
     participant Worker as Worker Runtime
+    participant Recipe as Recipe/History
     participant Model as ProcessModel
+    participant Render as Preview/Export
+    participant Agent as Optional Agent
     participant Store as TCAD_Web_Data
 
-    Browser->>HTTP: API command / static asset request
+    Browser->>HTTP: GET / and /static assets
+    HTTP->>Store: ensure _static assets
+    HTTP-->>Browser: HTML, CSS, JS, Three.js
+    Browser->>HTTP: POST API command
     HTTP->>Session: resolve cookie and client session
     Session->>Worker: RPC {cmd, payload, rid}
-    Worker->>Model: mutate recipe, run process, render, export
-    Worker->>Store: autosave, history, cache, preview, library
+    Worker->>Recipe: load, edit, migrate, autosave
+    Recipe->>Model: ProcessStep.execute(model)
+    Worker->>Model: run step, run all, reset, undo
+    Worker->>Render: preview manifest, gbuffer, slice, export
+    Worker->>Agent: optional recipe proposal and audit
+    Worker->>Store: history, cache, preview, exports, library
     Model-->>Worker: state, metrics, geometry
+    Render-->>Worker: images, meshes, files
+    Agent-->>Worker: candidate recipe or critique
     Worker-->>Session: {ok, result, rid}
     Session-->>HTTP: JSON / binary response
     HTTP-->>Browser: WebUI update
@@ -158,20 +317,57 @@ sequenceDiagram
 
 ```mermaid
 flowchart TD
-    Source[Repository Source] --> App[tcad_simulator.py]
-    App --> Runtime[Runtime Data]
-    Runtime --> WebData[TCAD_Web_Data]
-    WebData --> Static[_static WebUI assets]
-    WebData --> Sessions[session folders]
-    WebData --> Library[encrypted library and Admin config]
-    WebData --> Literature[local literature DB]
-    App --> Docs[docs]
-    Docs --> Html[docs_html generated site]
-    Tools[tools] --> Split[tcad_simulator_split generated package]
-    Tools --> Html
+    subgraph Source[Repository source]
+        App[tcad_simulator.py]
+        Readme[README and TCAD_Demo.png]
+        Docs[docs markdown]
+        Tools[tools]
+        Scripts[run and split scripts]
+    end
 
-    classDef ignored fill:#fff3cd,stroke:#d39e00,color:#5f4200;
-    class WebData,Html,Split ignored;
+    subgraph Generated[Generated developer outputs]
+        Html[docs_html offline site]
+        Vendor[tools/html_vendor docsite libraries]
+        Split[tcad_simulator_split package view]
+        SplitHtml[tcad_simulator_split/docs_html]
+        Reports[SPLIT_REPORT and VERIFY_REPORT]
+    end
+
+    subgraph Runtime[Local runtime data]
+        WebData[TCAD_Web_Data]
+        Static[_static WebUI JS/CSS assets]
+        SessionData[session autosave, logs, cache]
+        Exports[exports and preview cache]
+        Library[encrypted library and Admin config]
+        LitDB[local literature DB]
+    end
+
+    subgraph Tooling[Automation]
+        Docsite[tools/docsite.py]
+        VendorFetch[tools/vendor_docsite_libs.py]
+        Splitter[tools/split_tcad.py]
+        WebAssetFetch[WebUI Three.js downloader]
+    end
+
+    Docs --> Docsite --> Html
+    Docsite --> VendorFetch --> Vendor
+    App --> Splitter --> Split
+    Splitter --> Reports
+    Split --> SplitHtml
+    App --> WebData
+    WebData --> Static
+    WebData --> SessionData
+    WebData --> Exports
+    WebData --> Library
+    WebData --> LitDB
+    WebAssetFetch --> Static
+    Scripts --> App
+    Scripts --> Splitter
+
+    classDef generated fill:#eef6ff,stroke:#2b6cb0,color:#17324d;
+    classDef local fill:#fff7e6,stroke:#b7791f,color:#4a2f00;
+    class Html,Vendor,Split,SplitHtml,Reports generated;
+    class WebData,Static,SessionData,Exports,Library,LitDB local;
 ```
 
 WebUI JavaScript assets are prepared automatically under `TCAD_Web_Data/_static/`. The downloader uses local reuse first, then region-friendly CDN fallbacks, then npm/npmmirror tarball extraction for Three.js assets.
