@@ -21,10 +21,6 @@
 
 `tcad_simulator.py` 是项目主入口和权威源码。它把工艺 recipe 编辑、体素晶圆模型、光刻/掩膜流程、沉积、刻蚀、CMP、离子注入、退火、氧化/氮化、测量、3D/2D 可视化、导出工具、桌面 GUI、多用户 WebUI 和可选 LLM recipe 辅助集成在一个单文件应用中。
 
-> `tcad_simulator_split/` and `tcad_simulator_split.zip` are generated developer artifacts. They are useful for code inspection and reports, but they are not needed to run the simulator.
->
-> `tcad_simulator_split/` 和 `tcad_simulator_split.zip` 是生成的开发辅助产物，可用于代码审查和报告，运行 simulator 不需要它们。
-
 ## Contents
 
 - [Capabilities](#capabilities)
